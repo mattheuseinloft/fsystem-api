@@ -12,9 +12,13 @@ class UserController {
   }
 
   async update(req, res) {
-    console.log(req.userId);
+    const user = await UserService.modifyUser(req.userId, req.body);
 
-    return res.json({ ok: true });
+    if (user.error && user.status) {
+      return res.status(user.status).json({ error: user.error });
+    }
+
+    return res.json(user);
   }
 }
 

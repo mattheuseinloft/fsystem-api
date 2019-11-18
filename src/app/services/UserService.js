@@ -1,10 +1,25 @@
+import * as Yup from 'yup';
 import User from '../models/User';
 
 class UserService {
   async createUser(reqBody) {
-    const userExists = await User.findOne({
-      where: { email: reqBody.email }
+    const schema = Yup.object().shape({
+      username: Yup.string().required(),
+      email: Yup.string()
+        .email()
+        .required(),
+      password: Yup.string()
+        .required()
+        .min(6),
+      gender: Yup.string().required(),
+      date_of_birth: Yup.date().required()
     });
+
+    if (!(await schema.isValid(reqBody))) {
+      return { error: 'Validation fails', status: 400 };
+    }
+
+    const userExists = await User.findOne({ where: { email: reqBody.email } });
 
     if (userExists) {
       return { error: 'User already exists', status: 400 };
@@ -24,6 +39,26 @@ class UserService {
   }
 
   async modifyUser(userId, reqBody) {
+    const schema = Yup.object().shape({
+      username: Yup.string(),
+      email: Yup.string().email(),
+      oldPassword: Yup.string().min(6),
+      password: Yup.string()
+        .min(6)
+        .when('oldPassword', (oldPassword, field) =>
+          oldPassword ? field.required() : field
+        ),
+      confirmPassword: Yup.string().when('password', (password, field) =>
+        password ? field.required().oneOf([Yup.ref('password')]) : field
+      ),
+      gender: Yup.string(),
+      date_of_birth: Yup.date()
+    });
+
+    if (!(await schema.isValid(reqBody))) {
+      return { error: 'Validation fails', status: 400 };
+    }
+
     const { email, oldPassword } = reqBody;
 
     const user = await User.findByPk(userId);

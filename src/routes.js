@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
+import QuestionController from './app/controllers/QuestionController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -14,5 +15,7 @@ routes.use(authMiddleware);
 // A partir daqui, as rotas tem acesso ao req.userId
 
 routes.put('/users', UserController.update);
+
+routes.post('/questions', QuestionController.store);
 
 export default routes;

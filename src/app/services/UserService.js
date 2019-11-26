@@ -67,7 +67,10 @@ class UserService {
       const userExists = await User.findOne({ where: { email } });
 
       if (userExists) {
-        return { error: 'User with entered email already exists', status: 400 };
+        return {
+          error: 'Another user with entered email already exists',
+          status: 400
+        };
       }
     }
 

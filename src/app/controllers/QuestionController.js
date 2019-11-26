@@ -1,6 +1,16 @@
 import QuestionService from '../services/QuestionService';
 
 class QuestionController {
+  async index(req, res) {
+    const questions = await QuestionService.listNotExpired();
+
+    if (questions.error && questions.status) {
+      return res.status(questions.status).json({ error: questions.error });
+    }
+
+    return res.json(questions);
+  }
+
   async store(req, res) {
     const question = await QuestionService.createQuestion(req.body, req.userId);
 

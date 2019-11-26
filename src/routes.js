@@ -16,6 +16,7 @@ routes.use(authMiddleware);
 
 routes.put('/users', UserController.update);
 
+routes.get('/questions', QuestionController.index);
 routes.post('/questions', QuestionController.store);
 
 export default routes;

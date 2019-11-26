@@ -1,7 +1,18 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
+import { isPast, parseISO } from 'date-fns';
 import Question from '../models/Question';
 
 class QuestionService {
+  async listNotExpired() {
+    const questions = await Question.findAll({
+      where: { expiration_date: { [Op.gt]: new Date() } },
+      attributes: ['id', 'title', 'description', 'type', 'expiration_date']
+    });
+
+    return questions;
+  }
+
   async createQuestion(reqBody, reqUserId) {
     const schema = Yup.object().shape({
       title: Yup.string().required(),
@@ -15,6 +26,10 @@ class QuestionService {
     }
 
     const { title, description, type, expiration_date } = reqBody;
+
+    if (isPast(parseISO(expiration_date))) {
+      return { error: 'Expiration date is past', status: 400 };
+    }
 
     const { id, author_id } = await Question.create({
       title,

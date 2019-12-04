@@ -19,6 +19,7 @@ class Question extends Model {
 
   static associate(models) {
     this.belongsTo(models.User, { foreignKey: 'author_id', as: 'author' });
+    this.hasMany(models.Option, { as: 'options' });
   }
 }
 

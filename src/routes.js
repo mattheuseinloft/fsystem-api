@@ -19,4 +19,6 @@ routes.put('/users', UserController.update);
 routes.get('/questions', QuestionController.index);
 routes.post('/questions', QuestionController.store);
 
+// routes.post('/questions/:id/answer', AnswerController.store);
+
 export default routes;

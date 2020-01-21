@@ -59,11 +59,12 @@ class QuestionService {
       const { options } = reqBody;
 
       options.forEach(async option => {
-        const optionRegistry = await OptionService.createOption(option, id);
+        return OptionService.createOption(option, id);
 
-        if (optionRegistry.error && optionRegistry.status) {
-          return { error: optionRegistry.error, status: optionRegistry.status };
-        }
+        // // use this if verifying type of the options
+        // if (optionRegistry.error && optionRegistry.status) {
+        //   return { error: optionRegistry.error, status: optionRegistry.status };
+        // }
       });
 
       return {

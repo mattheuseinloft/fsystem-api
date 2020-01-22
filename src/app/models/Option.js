@@ -19,6 +19,7 @@ class Option extends Model {
       foreignKey: 'question_id',
       as: 'question'
     });
+    // this.hasMany(models.Answer, { as: 'answers' });
   }
 }
 

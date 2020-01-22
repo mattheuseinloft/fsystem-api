@@ -3,6 +3,7 @@ import { Router } from 'express';
 import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
 import QuestionController from './app/controllers/QuestionController';
+import AnswerController from './app/controllers/AnswerController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -19,6 +20,6 @@ routes.put('/users', UserController.update);
 routes.get('/questions', QuestionController.index);
 routes.post('/questions', QuestionController.store);
 
-// routes.post('/questions/:id/answer', AnswerController.store);
+routes.post('/questions/:id/answer', AnswerController.store);
 
 export default routes;

@@ -10,7 +10,14 @@ class QuestionService {
   async listNotExpired() {
     const questions = await Question.findAll({
       where: { expiration_date: { [Op.gt]: new Date() } },
-      attributes: ['id', 'title', 'description', 'type', 'expiration_date'],
+      attributes: [
+        'id',
+        'title',
+        'description',
+        'type',
+        'expiration_date',
+        'number_of_answers'
+      ],
       include: [
         {
           model: Option,
@@ -52,7 +59,8 @@ class QuestionService {
       description,
       type,
       expiration_date,
-      author_id: reqUserId
+      author_id: reqUserId,
+      number_of_answers: 0
     });
 
     if (type === 'Multiple Choice') {

@@ -83,6 +83,8 @@ class AnswerService {
       question_id
     });
 
+    await question.increment('number_of_answers', { by: 1 });
+
     return {
       id,
       text_answer,

@@ -10,6 +10,7 @@ class QuestionService {
   async listNotExpired() {
     const questions = await Question.findAll({
       where: { expiration_date: { [Op.gt]: new Date() } },
+      order: [['number_of_answers', 'DESC']],
       attributes: [
         'id',
         'title',
